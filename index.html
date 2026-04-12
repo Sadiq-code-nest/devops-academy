@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevOps Academy — Zero to Production</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ NAV ═══ -->
+<header class="nav" id="mainNav">
+  <a href="#home" class="nav-brand">
+    <span class="brand-prefix">Dev</span><span class="brand-suffix">Ops</span><span class="brand-dot">.</span>Academy
+  </a>
+  <nav class="nav-links" id="navLinks">
+    <a href="#home" class="nav-link active" data-section="home">Home</a>
+    <a href="#outcomes" class="nav-link" data-section="outcomes">Outcomes</a>
+    <a href="#curriculum" class="nav-link" data-section="curriculum">Curriculum</a>
+    <a href="#workflow" class="nav-link" data-section="workflow">DevOps Flow</a>
+    <a href="#projects" class="nav-link" data-section="projects">Projects</a>
+    <a href="#instructor" class="nav-link" data-section="instructor">Instructor</a>
+    <a href="#reviews" class="nav-link" data-section="reviews">Reviews</a>
+    <a href="#pricing" class="nav-link" data-section="pricing">Pricing</a>
+  </nav>
+  <div class="nav-right">
+    <button class="dark-toggle" id="darkToggle" title="Toggle dark mode">
+      <span class="toggle-icon">◐</span>
+    </button>
+    <a href="#pricing" class="nav-cta">Enroll Now</a>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home" class="mob-link" onclick="closeMobile()">Home</a>
+  <a href="#outcomes" class="mob-link" onclick="closeMobile()">Outcomes</a>
+  <a href="#curriculum" class="mob-link" onclick="closeMobile()">Curriculum</a>
+  <a href="#workflow" class="mob-link" onclick="closeMobile()">DevOps Flow</a>
+  <a href="#projects" class="mob-link" onclick="closeMobile()">Projects</a>
+  <a href="#instructor" class="mob-link" onclick="closeMobile()">Instructor</a>
+  <a href="#reviews" class="mob-link" onclick="closeMobile()">Reviews</a>
+  <a href="#pricing" class="mob-link" onclick="closeMobile()">Pricing</a>
+  <a href="#pricing" class="mob-cta" onclick="closeMobile()">Enroll Now →</a>
+</div>
+
+<!-- ═══════════════════════════════════════════ HERO ═══ -->
+<section class="section" id="home">
+  <div class="hero-bg"></div>
+  <div class="container hero-container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        NEXT BATCH STARTS SOON · 25 SEATS ONLY
+      </div>
+      <h1 class="hero-headline">
+        Go from Developer<br>to <span class="highlight">DevOps Engineer</span><br>in <em>2 months</em>
+      </h1>
+      <p class="hero-sub">
+        15 live classes. Real AWS infrastructure. 3 job-ready portfolio projects.
+        Land your first DevOps role with the exact tools companies use today.
+      </p>
+      <div class="hero-actions">
+        <a href="#pricing" class="btn-primary">
+          Enroll Now — Free First Class
+          <span class="btn-arrow">→</span>
+        </a>
+        <a href="#curriculum" class="btn-ghost">
+          View Curriculum
+        </a>
+      </div>
+      <div class="trust-row">
+        <div class="trust-item"><span class="trust-num">200+</span><span class="trust-label">Students</span></div>
+        <div class="trust-divider"></div>
+        <div class="trust-item"><span class="trust-num">15</span><span class="trust-label">Live Classes</span></div>
+        <div class="trust-divider"></div>
+        <div class="trust-item"><span class="trust-num">3</span><span class="trust-label">Real Projects</span></div>
+        <div class="trust-divider"></div>
+        <div class="trust-item"><span class="trust-num">4.9★</span><span class="trust-label">Rating</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="terminal-card">
+        <div class="terminal-bar">
+          <span class="t-dot t-red"></span>
+          <span class="t-dot t-yellow"></span>
+          <span class="t-dot t-green"></span>
+          <span class="t-title">jenkins-pipeline.log</span>
+        </div>
+        <div class="terminal-body" id="terminalBody">
+          <div class="t-line"><span class="t-step">Stage 1</span> <span class="t-ok">✓</span> <span class="t-msg">Checkout SCM</span></div>
+          <div class="t-line"><span class="t-step">Stage 2</span> <span class="t-ok">✓</span> <span class="t-msg">Run unit tests</span></div>
+          <div class="t-line"><span class="t-step">Stage 3</span> <span class="t-ok">✓</span> <span class="t-msg">Docker build &amp; push → ECR</span></div>
+          <div class="t-line"><span class="t-step">Stage 4</span> <span class="t-ok">✓</span> <span class="t-msg">Ansible deploy → EC2</span></div>
+          <div class="t-line t-typing"><span class="t-step">Stage 5</span> <span class="t-run">⟳</span> <span class="t-msg">Health check...</span></div>
+          <div class="t-line t-success">✓ Pipeline completed in 2m 14s</div>
+          <div class="t-line t-info">→ Deployed to: app.devops.academy</div>
+          <div class="t-cursor">▌</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tools Strip -->
+  <div class="tools-strip">
+    <div class="tools-label">Technologies you'll master:</div>
+    <div class="tools-row">
+      <div class="tool-chip"><span class="tool-emoji">🐧</span> Linux</div>
+      <div class="tool-chip"><span class="tool-emoji">🌿</span> Git & GitHub</div>
+      <div class="tool-chip"><span class="tool-emoji">🐳</span> Docker</div>
+      <div class="tool-chip"><span class="tool-emoji">⚙️</span> Jenkins</div>
+      <div class="tool-chip"><span class="tool-emoji">☁️</span> AWS</div>
+      <div class="tool-chip"><span class="tool-emoji">🏗️</span> Terraform</div>
+      <div class="tool-chip"><span class="tool-emoji">📦</span> Ansible</div>
+      <div class="tool-chip"><span class="tool-emoji">🔒</span> Nginx</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ OUTCOMES ═══ -->
+<section class="section section-alt" id="outcomes">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">What You'll Build</div>
+      <h2>Job-Ready Skills From Day One</h2>
+      <p>Every class has a lab. Every lab is something you'd do on the job.</p>
+    </div>
+    <div class="outcomes-grid">
+      <div class="outcome-card">
+        <div class="outcome-icon">⚙️</div>
+        <h3>Build CI/CD Pipelines</h3>
+        <p>Automate code from push to production with Jenkins, GitHub webhooks, and Declarative Pipelines.</p>
+        <div class="outcome-tag">Jenkins · GitHub Actions</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">☁️</div>
+        <h3>Deploy on AWS</h3>
+        <p>Launch real infrastructure: EC2 instances behind an ALB, RDS databases, S3 buckets, VPCs, IAM.</p>
+        <div class="outcome-tag">EC2 · ALB · RDS · S3</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">🐳</div>
+        <h3>Containerize Everything</h3>
+        <p>Write production-grade Dockerfiles, multi-stage builds, and Docker Compose for multi-service apps.</p>
+        <div class="outcome-tag">Docker · Docker Compose</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">🏗️</div>
+        <h3>Infrastructure as Code</h3>
+        <p>Provision and version your entire AWS environment with Terraform modules and remote state.</p>
+        <div class="outcome-tag">Terraform · HCL</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">📦</div>
+        <h3>Automate Configuration</h3>
+        <p>Use Ansible playbooks and roles to configure servers, deploy apps, and manage secrets at scale.</p>
+        <div class="outcome-tag">Ansible · Ansible Vault</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">📊</div>
+        <h3>Monitor Production</h3>
+        <p>Set up CloudWatch dashboards, metrics, alarms, and structured logging for your live apps.</p>
+        <div class="outcome-tag">CloudWatch · Alerting</div>
+      </div>
+    </div>
+
+    <!-- Transformation -->
+    <div class="transform-banner">
+      <div class="transform-side">
+        <div class="transform-label">Before</div>
+        <div class="transform-items">
+          <div class="tx-item tx-bad">❌ Deploys break on Fridays</div>
+          <div class="tx-item tx-bad">❌ "Works on my machine"</div>
+          <div class="tx-item tx-bad">❌ Manual SSH to 10 servers</div>
+          <div class="tx-item tx-bad">❌ No idea what's in production</div>
+        </div>
+      </div>
+      <div class="transform-arrow">→</div>
+      <div class="transform-side">
+        <div class="transform-label">After</div>
+        <div class="transform-items">
+          <div class="tx-item tx-good">✓ Automated deploys in 2 minutes</div>
+          <div class="tx-item tx-good">✓ Containerized, reproducible builds</div>
+          <div class="tx-item tx-good">✓ Ansible configures all at once</div>
+          <div class="tx-item tx-good">✓ CloudWatch monitors everything</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ ROADMAP ═══ -->
+<section class="section" id="curriculum">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">15 Classes · 7 Phases</div>
+      <h2>Your Learning Roadmap</h2>
+      <p>A structured journey from absolute zero to production-ready DevOps engineer.</p>
+    </div>
+
+    <!-- Stepper -->
+    <div class="roadmap-stepper">
+      <div class="roadmap-track"></div>
+      <div class="phase-steps" id="phaseSteps">
+        <div class="phase-step active" data-phase="0">
+          <div class="phase-dot"><span>1</span></div>
+          <div class="phase-name">Foundation</div>
+        </div>
+        <div class="phase-step" data-phase="1">
+          <div class="phase-dot"><span>2</span></div>
+          <div class="phase-name">Web Server</div>
+        </div>
+        <div class="phase-step" data-phase="2">
+          <div class="phase-dot"><span>3</span></div>
+          <div class="phase-name">CI/CD</div>
+        </div>
+        <div class="phase-step" data-phase="3">
+          <div class="phase-dot"><span>4</span></div>
+          <div class="phase-name">Docker</div>
+        </div>
+        <div class="phase-step" data-phase="4">
+          <div class="phase-dot"><span>5</span></div>
+          <div class="phase-name">AWS Cloud</div>
+        </div>
+        <div class="phase-step" data-phase="5">
+          <div class="phase-dot"><span>6</span></div>
+          <div class="phase-name">IaC</div>
+        </div>
+        <div class="phase-step" data-phase="6">
+          <div class="phase-dot"><span>7</span></div>
+          <div class="phase-name">Projects</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accordion -->
+    <div class="curriculum-wrap" id="curriculumWrap"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ WORKFLOW ═══ -->
+<section class="section section-alt" id="workflow">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Real-World DevOps</div>
+      <h2>Code to Production — Step by Step</h2>
+      <p>The exact workflow you'll build and understand by the end of this course.</p>
+    </div>
+    <div class="pipeline-visual">
+      <div class="pipe-node">
+        <div class="pipe-icon">👨‍💻</div>
+        <div class="pipe-label">Developer</div>
+        <div class="pipe-sub">git push</div>
+      </div>
+      <div class="pipe-connector"><div class="pipe-line"></div><span>webhook</span></div>
+      <div class="pipe-node">
+        <div class="pipe-icon">⚙️</div>
+        <div class="pipe-label">Jenkins</div>
+        <div class="pipe-sub">CI Pipeline</div>
+      </div>
+      <div class="pipe-connector"><div class="pipe-line"></div><span>build</span></div>
+      <div class="pipe-node">
+        <div class="pipe-icon">🐳</div>
+        <div class="pipe-label">Docker</div>
+        <div class="pipe-sub">Image → ECR</div>
+      </div>
+      <div class="pipe-connector"><div class="pipe-line"></div><span>deploy</span></div>
+      <div class="pipe-node">
+        <div class="pipe-icon">☁️</div>
+        <div class="pipe-label">AWS EC2</div>
+        <div class="pipe-sub">Run container</div>
+      </div>
+      <div class="pipe-connector"><div class="pipe-line"></div><span>proxy</span></div>
+      <div class="pipe-node">
+        <div class="pipe-icon">🌐</div>
+        <div class="pipe-label">Nginx</div>
+        <div class="pipe-sub">Serve users</div>
+      </div>
+      <div class="pipe-connector"><div class="pipe-line"></div><span>monitor</span></div>
+      <div class="pipe-node">
+        <div class="pipe-icon">📊</div>
+        <div class="pipe-label">CloudWatch</div>
+        <div class="pipe-sub">Alerts & logs</div>
+      </div>
+    </div>
+
+    <div class="workflow-steps">
+      <div class="wf-step">
+        <div class="wf-num">01</div>
+        <div class="wf-body">
+          <h4>Developer pushes to GitHub</h4>
+          <p>A feature branch is merged into <code>main</code>. GitHub fires a webhook to Jenkins immediately.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">02</div>
+        <div class="wf-body">
+          <h4>Jenkins runs the CI pipeline</h4>
+          <p>Declarative Jenkinsfile runs: lint → unit tests → code coverage. Pipeline fails fast if anything breaks.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">03</div>
+        <div class="wf-body">
+          <h4>Docker image built and pushed to ECR</h4>
+          <p>Multi-stage Dockerfile produces a lean production image tagged with the Git SHA, then pushed to AWS ECR.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">04</div>
+        <div class="wf-body">
+          <h4>Ansible deploys to EC2 (zero downtime)</h4>
+          <p>Jenkins triggers an Ansible playbook that pulls the new image, starts the container, and only cuts traffic once the health check passes.</p>
+        </div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">05</div>
+        <div class="wf-body">
+          <h4>Nginx routes traffic, CloudWatch monitors</h4>
+          <p>Nginx terminates SSL and reverse-proxies to the container. CloudWatch alarms fire if CPU or error rate spikes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ PROJECTS ═══ -->
+<section class="section" id="projects">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Portfolio Projects</div>
+      <h2>3 Real Projects. GitHub-Ready.</h2>
+      <p>Not toy examples — these are production-grade builds that stand up to technical interview scrutiny.</p>
+    </div>
+    <div class="projects-grid">
+      <!-- Project 1 -->
+      <div class="proj-card">
+        <div class="proj-header">
+          <span class="proj-level beginner">Beginner</span>
+          <span class="proj-class">Class 5–9</span>
+        </div>
+        <h3>Containerised Full-Stack App</h3>
+        <p>Build a React + Node.js + PostgreSQL app. Write multi-stage Dockerfiles, wire with Docker Compose, deploy on EC2 with Nginx and free HTTPS via Certbot.</p>
+        <div class="proj-arch">
+          <div class="arch-row">React :3000 → Nginx :80/:443</div>
+          <div class="arch-row">→ Node API :5000 → PostgreSQL :5432</div>
+          <div class="arch-note">All on a shared Docker bridge network</div>
+        </div>
+        <div class="proj-stack">
+          <span>React</span><span>Node.js</span><span>PostgreSQL</span>
+          <span>Docker Compose</span><span>Nginx</span><span>EC2</span>
+        </div>
+        <div class="proj-actions">
+          <a href="#" class="proj-btn">View Project →</a>
+          <a href="#" class="proj-btn-ghost">Architecture →</a>
+        </div>
+      </div>
+      <!-- Project 2 -->
+      <div class="proj-card proj-featured">
+        <div class="proj-header">
+          <span class="proj-level intermediate">Intermediate</span>
+          <span class="proj-class">Class 6–11</span>
+        </div>
+        <h3>Full CI/CD Pipeline with Jenkins</h3>
+        <p>Every push to main triggers lint, test, Docker build → ECR, then Ansible deploys to EC2 — with Slack notification on success or failure.</p>
+        <div class="proj-arch">
+          <div class="arch-row">GitHub push → Webhook → Jenkins</div>
+          <div class="arch-row">→ build/test → ECR → Ansible → EC2</div>
+          <div class="arch-note">Blue-green: old container kept until new passes health check</div>
+        </div>
+        <div class="proj-stack">
+          <span>Jenkins</span><span>Docker</span><span>AWS ECR</span>
+          <span>Ansible</span><span>Slack API</span><span>GitHub Webhooks</span>
+        </div>
+        <div class="proj-actions">
+          <a href="#" class="proj-btn">View Project →</a>
+          <a href="#" class="proj-btn-ghost">Architecture →</a>
+        </div>
+      </div>
+      <!-- Project 3 -->
+      <div class="proj-card">
+        <div class="proj-header">
+          <span class="proj-level advanced">Advanced</span>
+          <span class="proj-class">Class 12–15</span>
+        </div>
+        <h3>AWS Infrastructure with Terraform + Ansible</h3>
+        <p>Provision a full production AWS environment with Terraform (VPC, EC2, RDS, ALB, S3, Route 53). Configure every server with Ansible. Jenkins triggers on merge to main.</p>
+        <div class="proj-arch">
+          <div class="arch-row">Terraform: VPC → EC2 → RDS → ALB → R53</div>
+          <div class="arch-row">Ansible: configure Nginx + deploy app</div>
+          <div class="arch-note">Jenkins: full provision + deploy on PR merge</div>
+        </div>
+        <div class="proj-stack">
+          <span>Terraform</span><span>Ansible</span><span>Jenkins</span>
+          <span>VPC</span><span>ALB</span><span>RDS</span><span>CloudWatch</span>
+        </div>
+        <div class="proj-actions">
+          <a href="#" class="proj-btn">View Project →</a>
+          <a href="#" class="proj-btn-ghost">Architecture →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ INSTRUCTOR ═══ -->
+<section class="section section-alt" id="instructor">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Your Instructor</div>
+      <h2>Learn from Someone Who's Done It</h2>
+    </div>
+    <div class="instructor-card">
+      <div class="instructor-left">
+        <div class="instructor-avatar">
+          <div class="avatar-initials">MA</div>
+          <div class="avatar-status">🟢 Active Instructor</div>
+        </div>
+        <div class="instructor-creds">
+          <div class="cred-item"><span class="cred-icon">☁️</span> AWS Certified</div>
+          <div class="cred-item"><span class="cred-icon">🐳</span> Docker Certified</div>
+          <div class="cred-item"><span class="cred-icon">🏗️</span> Terraform Associate</div>
+          <div class="cred-item"><span class="cred-icon">⭐</span> 4.9/5 Rating</div>
+        </div>
+      </div>
+      <div class="instructor-right">
+        <div class="instructor-name">Mohammad Arif</div>
+        <div class="instructor-title">Senior DevOps Engineer · Educator</div>
+        <p class="instructor-bio">
+          Started as a backend developer writing Node.js APIs. Got tired of "works on my machine" and spent the next three years going deep on infrastructure. Today I design CI/CD systems, cloud architectures, and automation pipelines for real production workloads.
+        </p>
+        <p class="instructor-bio">
+          I built this course because I couldn't find one that taught DevOps the way it's actually done at companies — not buzzwords, not theory, but real pipelines that deploy real apps to real infrastructure.
+        </p>
+        <div class="instructor-timeline">
+          <div class="timeline-item">
+            <div class="tl-year">2018</div>
+            <div class="tl-desc">Backend Developer (Node.js, Python)</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-year">2020</div>
+            <div class="tl-desc">Transitioned to DevOps · AWS + Docker</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-year">2022</div>
+            <div class="tl-desc">Senior DevOps Engineer · CI/CD at scale</div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-year">2024</div>
+            <div class="tl-desc">Launched DevOps Academy · 200+ students</div>
+          </div>
+        </div>
+        <div class="instructor-tools">
+          <span>Docker</span><span>AWS</span><span>Jenkins</span>
+          <span>Terraform</span><span>Ansible</span><span>Kubernetes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ REVIEWS ═══ -->
+<section class="section" id="reviews">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Student Reviews</div>
+      <h2>What Happens After the Course</h2>
+      <p>Real feedback from students who shipped real pipelines.</p>
+    </div>
+    <div class="rating-summary">
+      <div class="rating-big">4.9</div>
+      <div class="rating-stars">★★★★★</div>
+      <div class="rating-count">from 200+ students</div>
+    </div>
+    <div class="reviews-grid" id="reviewsGrid"></div>
+
+    <!-- Add Review -->
+    <div class="add-review">
+      <h4>Share Your Experience</h4>
+      <div class="review-form-grid">
+        <div class="rf-field">
+          <label>Your Name</label>
+          <input type="text" id="rName" placeholder="Rakib Hasan">
+        </div>
+        <div class="rf-field">
+          <label>Your Role</label>
+          <input type="text" id="rRole" placeholder="Student / DevOps Engineer">
+        </div>
+        <div class="rf-field">
+          <label>Rating</label>
+          <select id="rRating">
+            <option value="5">★★★★★ — Excellent</option>
+            <option value="4">★★★★☆ — Good</option>
+            <option value="3">★★★☆☆ — Average</option>
+          </select>
+        </div>
+        <div class="rf-field rf-full">
+          <label>Your Review</label>
+          <textarea id="rText" placeholder="Share your experience with the course..."></textarea>
+        </div>
+      </div>
+      <button class="post-btn" onclick="postReview()">Post Review →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ PRICING ═══ -->
+<section class="section section-dark" id="pricing">
+  <div class="container">
+    <div class="section-header light">
+      <div class="section-tag light">Enrollment</div>
+      <h2>Join the Next Batch</h2>
+      <p>Limited seats. Live instruction. Lifetime recording access.</p>
+    </div>
+
+    <div class="pricing-layout">
+      <!-- Batch Info -->
+      <div class="batch-card">
+        <div class="batch-header">
+          <div class="batch-status"><span class="status-dot"></span> Enrolling Now</div>
+          <h3>Next Batch</h3>
+        </div>
+        <div class="batch-details">
+          <div class="batch-item">
+            <span class="bi-icon">📅</span>
+            <div>
+              <div class="bi-label">Start Date</div>
+              <div class="bi-value">May 5, 2025</div>
+            </div>
+          </div>
+          <div class="batch-item">
+            <span class="bi-icon">⏱️</span>
+            <div>
+              <div class="bi-label">Duration</div>
+              <div class="bi-value">2 months · 2 classes/week</div>
+            </div>
+          </div>
+          <div class="batch-item">
+            <span class="bi-icon">🎥</span>
+            <div>
+              <div class="bi-label">Format</div>
+              <div class="bi-value">Live online + recorded</div>
+            </div>
+          </div>
+          <div class="batch-item">
+            <span class="bi-icon">💻</span>
+            <div>
+              <div class="bi-label">Requirements</div>
+              <div class="bi-value">8 GB RAM, stable internet</div>
+            </div>
+          </div>
+        </div>
+        <div class="seats-indicator">
+          <div class="seats-label">
+            <span>Seats Remaining</span>
+            <span class="seats-count">11 / 25</span>
+          </div>
+          <div class="seats-bar">
+            <div class="seats-fill" style="width: 56%"></div>
+          </div>
+          <div class="seats-warning">⚡ Filling fast — secure your seat now</div>
+        </div>
+      </div>
+
+      <!-- Price Card -->
+      <div class="price-card">
+        <div class="price-tag">
+          <div class="price-original">৳15,000</div>
+          <div class="price-current">৳9,999</div>
+          <div class="price-save">Save 33% — Early Bird</div>
+        </div>
+        <div class="price-includes">
+          <div class="pi-item">✓ 15 live classes (recorded for review)</div>
+          <div class="pi-item">✓ Labs after every single class</div>
+          <div class="pi-item">✓ 3 portfolio projects with code review</div>
+          <div class="pi-item">✓ Private Discord community</div>
+          <div class="pi-item">✓ Resume & LinkedIn review</div>
+          <div class="pi-item">✓ Free first class — no commitment</div>
+        </div>
+
+        <!-- Enrollment Form -->
+        <div class="enroll-form">
+          <div class="ef-field">
+            <input type="text" id="eName" placeholder="Full Name *">
+          </div>
+          <div class="ef-field">
+            <input type="email" id="eEmail" placeholder="Email Address *">
+          </div>
+          <div class="ef-field">
+            <input type="text" id="ePhone" placeholder="Phone / WhatsApp">
+          </div>
+          <div class="ef-field">
+            <select id="eBg">
+              <option value="">Your Background</option>
+              <option>Student — CS / IT</option>
+              <option>Working professional — switching to DevOps</option>
+              <option>Developer wanting to learn infra</option>
+              <option>Complete beginner</option>
+            </select>
+          </div>
+          <button class="enroll-btn" onclick="submitEnroll()">
+            Secure My Seat →
+          </button>
+          <div class="success-msg" id="successMsg">
+            🎉 Registration received! We'll reach out within 24 hours with batch details and payment info.
+          </div>
+          <div class="enroll-note">Free first class · No advance payment needed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Free Resources -->
+    <div class="resources-section">
+      <div class="resources-header">Free Resources for All Students</div>
+      <div class="resources-row">
+        <a href="#" class="resource-btn">📄 Linux Cheat Sheet</a>
+        <a href="#" class="resource-btn">📝 Git Commands Guide</a>
+        <a href="#" class="resource-btn">🗺️ DevOps Roadmap PDF</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ FOOTER ═══ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <span class="brand-prefix">Dev</span><span class="brand-suffix">Ops</span><span class="brand-dot">.</span>Academy
+    </div>
+    <div class="footer-links">
+      <a href="#home">Home</a>
+      <a href="#curriculum">Curriculum</a>
+      <a href="#projects">Projects</a>
+      <a href="#pricing">Enroll</a>
+    </div>
+    <div class="footer-copy">© 2025 DevOps Academy. Built with the tools we teach.</div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════ STICKY CTA ═══ -->
+<a href="#pricing" class="sticky-cta" id="stickyCta">
+  <span>Enroll Now</span>
+  <span class="sticky-arrow">→</span>
+</a>
+
+<script src="main.js"></script>
+</body>
+</html>
