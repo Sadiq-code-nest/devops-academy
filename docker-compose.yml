@@ -1,42 +1,37 @@
-# ════════════════════════════════════════════════════
-# Docker Compose — DevOps Academy
-# Usage:
-#   docker compose up -d          # run locally
-#   docker compose down           # stop
-#   docker compose logs -f        # follow logs
-# ════════════════════════════════════════════════════
-
-version: "3.9"
+# ═══════════════════════════════════════════════════════════
+#  DevOps Academy — Docker Compose
+#  Usage:
+#    docker compose up -d          → start (detached)
+#    docker compose down           → stop
+#    docker compose logs -f        → tail logs
+#    docker compose up -d --build  → rebuild & restart
+# ═══════════════════════════════════════════════════════════
 
 services:
 
-  # ── Web App (static site via Nginx) ────────────────
-  web:
-    image: ${DOCKER_IMAGE:-devops-academy:latest}
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-      target: production
-    container_name: devops-academy-web
+    image: sadiqaws24/devops-academy:latest
+    container_name: devops-academy-app
     restart: unless-stopped
     ports:
-      - "${APP_PORT:-8080}:80"
+      - "${APP_PORT:-8080}:8080"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      test: ["CMD", "curl", "-fs", "http://localhost:8080/health"]
       interval: 15s
       timeout: 5s
       retries: 3
       start_period: 10s
+    networks:
+      - devops-net
     labels:
-      - "traefik.enable=false"         # disable if not using Traefik
-      - "app=devops-academy"
-      - "env=${DEPLOY_ENV:-local}"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+      - "project=devops-academy"
+      - "maintainer=sadiqaws24"
 
 networks:
-  default:
-    name: devops-academy-net
+  devops-net:
+    driver: bridge
