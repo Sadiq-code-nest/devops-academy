@@ -1,0 +1,73 @@
+# ═══════════════════════════════════════════════════════════
+#  .dockerignore — Exclude everything unnecessary
+#  Keeps build context small → faster builds
+# ═══════════════════════════════════════════════════════════
+
+# Dependencies (reinstalled inside container)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.yarn/
+
+# Build artifacts (generated fresh in builder stage)
+dist/
+build/
+.cache/
+
+# Version control
+.git/
+.gitignore
+.gitattributes
+
+# CI / DevOps files (not needed in image)
+Jenkinsfile
+.github/
+.circleci/
+deploy.sh
+docker-compose*.yml
+*.sh
+
+# Dev tools & configs
+.eslintrc*
+.prettierrc*
+.editorconfig
+.stylelintrc*
+jest.config.*
+tsconfig.json
+vite.config.*
+webpack.config.*
+
+# Documentation
+README.md
+CHANGELOG.md
+docs/
+*.md
+
+# Environment files (never bake secrets into image)
+.env
+.env.*
+!.env.example
+
+# OS / IDE noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# Test files
+__tests__/
+*.test.*
+*.spec.*
+coverage/
+
+# Terraform / Ansible (if co-located)
+*.tf
+*.tfstate*
+*.tfvars
+ansible/
