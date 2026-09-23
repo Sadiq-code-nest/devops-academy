@@ -47,8 +47,8 @@ flowchart LR
 <p align="center"><img src="docs/screenshots/01-landing-page.png" width="850"/></p>
 <p align="center"><b>Landing Page</b></p>
 
-<p align="center"><img src="docs/screenshots/02-curriculum-features.png" width="850"/></p>
-<p align="center"><b>Curriculum Breakdown</b></p>
+<!-- <p align="center"><img src="docs/screenshots/02-curriculum-features.png" width="850"/></p>
+<p align="center"><b>Curriculum Breakdown</b></p> -->
 
 <p align="center"><img src="docs/screenshots/03-student-login.png" width="850"/></p>
 <p align="center"><b>Student Login</b></p>
