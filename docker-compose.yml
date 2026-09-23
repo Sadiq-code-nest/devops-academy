@@ -1,0 +1,48 @@
+services:
+
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    env_file: ./backend/.env
+    volumes:
+      - mongo_data:/data/db
+    networks: [academy-net]
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+    image: devops-academy-backend:latest
+    restart: unless-stopped
+    env_file: ./backend/.env
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
+    networks: [academy-net]
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: "http://172.16.3.59:5000/api"
+    image: devops-academy-frontend:latest
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    networks: [academy-net]
+
+networks:
+  academy-net:
+    driver: bridge
+
+volumes:
+  mongo_data:
