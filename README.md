@@ -29,11 +29,35 @@ That's it — the script prints the running app URL and admin credentials when i
 
 ## Architecture
 
-```
-Browser → Nginx (frontend container, :8080) → Express API (backend container, :5000) → MongoDB (container, internal only)
+```mermaid
+flowchart LR
+    User(("👤 User"))
+
+    subgraph Docker["Docker Network"]
+        direction LR
+        FE["🌐 Frontend\nReact + Nginx\n:8080"]
+        BE["⚙️ Backend\nNode.js + Express\n:5000"]
+        DB[("🗄️ MongoDB\ninternal only")]
+        FE -->|"REST API"| BE
+        BE -->|"Mongoose"| DB
+    end
+
+    User -->|"HTTP :8080"| FE
 ```
 
-MongoDB is not exposed to the host — only the frontend and backend ports are, and the backend is the only thing that can reach the database.
+Three containers, one Docker network. Only the frontend and backend ports are exposed to the host — MongoDB is reachable only from the backend, never directly from outside.
+
+## Project workflow
+
+| | |
+|---|---|
+| ![Landing page](docs/screenshots/01-landing-page.png) | **Landing page** — course overview, stats, tech stack |
+| ![Curriculum](docs/screenshots/02-curriculum-features.png) | **Curriculum breakdown** — CI/CD, AWS, Docker, IaC, monitoring modules |
+| ![Student login](docs/screenshots/03-student-login.png) | **Student auth** — JWT-based login/register |
+| ![Student dashboard](docs/screenshots/04-student-dashboard.png) | **Student dashboard** — enrolled classes, phase progress |
+| ![Student profile](docs/screenshots/05-student-profile.png) | **Student profile** — account details |
+| ![Admin login](docs/screenshots/06-admin-login.png) | **Admin auth** — separate restricted login, bcrypt-hashed, DB-backed |
+| ![Admin dashboard](docs/screenshots/07-admin-dashboard.png) | **Admin dashboard** — live student registrations, stats |
 
 ## Project structure
 
