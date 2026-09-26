@@ -39,8 +39,8 @@ pipeline {
         catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
           sh '''
             mkdir -p reports
+            chmod 777 reports
             docker run --rm \
-              --user $(id -u):$(id -g) \
               -v $(pwd):/src \
               -v dependency-check-data:/usr/share/dependency-check/data \
               -v $(pwd)/reports:/report \
@@ -62,7 +62,9 @@ pipeline {
       steps {
         withSonarQubeEnv('SonarQube') {
           sh '''
-            docker run --rm --network host --user $(id -u):$(id -g) -v $(pwd):/usr/src sonarsource/sonar-scanner-cli \
+            mkdir -p .scannerwork
+            chmod 777 .scannerwork
+            docker run --rm --network host -v $(pwd):/usr/src sonarsource/sonar-scanner-cli \
               -Dsonar.projectKey=devops-academy \
               -Dsonar.sources=backend,frontend/src \
               -Dsonar.working.directory=/usr/src/.scannerwork \
