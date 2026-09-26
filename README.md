@@ -74,15 +74,8 @@ flowchart LR
 
 ### GitHub Actions — Security Scan → Deploy
 
-```
-Security Scan #11 — Success
-  ✔ Stage 1: Trivy Scan
-  ✔ Stage 2: OWASP Dependency-Check
-  ✔ Stage 3: SonarQube Scan
-      → Deploy (workflow_run trigger)
-          ✔ Stage 1: Build Docker Images
-          ✔ Stage 2: Deploy
-```
+<p align="center"><img src="docs/screenshots/10-github-actions-pipeline.png" width="900"/></p>
+<p align="center"><b>GitHub Actions — Trivy → OWASP → SonarQube → Deploy (workflow_run trigger)</b></p>
 
 ### Jenkins — Same Gates, Same Server
 
