@@ -1,6 +1,6 @@
 # DevOps Academy — Dockerized MERN Application
 
-Student enrollment platform, fully containerized and production-hardened.
+Student enrollment platform, fully containerized, DevSecOps-hardened, with dual CI/CD (GitHub Actions + Jenkins) enforcing security gates before every deploy.
 
 ## Stack
 
@@ -9,6 +9,8 @@ Student enrollment platform, fully containerized and production-hardened.
 - **Database:** MongoDB
 - **Reverse Proxy:** Nginx
 - **Containers:** Docker (multi-stage builds) · Docker Compose
+- **CI/CD:** GitHub Actions · Jenkins
+- **Security:** Trivy · OWASP Dependency-Check · SonarQube
 
 ## Quick Start
 
@@ -17,8 +19,6 @@ git clone <this-repo>
 cd devops-academy-MERN
 ./setup.sh
 ```
-
-Prints the app URL and admin credentials when done.
 
 ## Architecture
 
@@ -42,13 +42,62 @@ flowchart LR
 - Nginx serves the React build and fronts the stack
 - MongoDB has no host-exposed port — reachable only from the backend
 
+## DevSecOps Pipeline
+
+```mermaid
+flowchart LR
+    subgraph CI["CI — dual engine"]
+        GHA[GitHub Actions]
+        JEN[Jenkins]
+    end
+
+    GHA --> T1[Trivy]
+    GHA --> O1[OWASP Dependency-Check]
+    GHA --> S1[SonarQube]
+    JEN --> T2[Trivy]
+    JEN --> O2[OWASP Dependency-Check]
+    JEN --> S2[SonarQube]
+
+    T1 & O1 & S1 --> QG1{Quality Gate}
+    T2 & O2 & S2 --> QG2{Quality Gate}
+
+    QG1 -->|pass| DEPLOY[Build Images → Deploy]
+    QG2 -->|pass| DEPLOY
+```
+
+| Gate | Tool | Enforcement |
+|---|---|---|
+| Vulnerability scan (filesystem/deps) | **Trivy** | Blocks on CRITICAL/HIGH |
+| Dependency CVE audit | **OWASP Dependency-Check** | NVD-backed, CVSS ≥ 7 |
+| Static code analysis | **SonarQube** | Quality Gate must pass |
+| Deploy | Docker Compose | Only runs after all gates pass |
+
+### GitHub Actions — Security Scan → Deploy
+
+```
+Security Scan #11 — Success
+  ✔ Stage 1: Trivy Scan
+  ✔ Stage 2: OWASP Dependency-Check
+  ✔ Stage 3: SonarQube Scan
+      → Deploy (workflow_run trigger)
+          ✔ Stage 1: Build Docker Images
+          ✔ Stage 2: Deploy
+```
+
+### Jenkins — Same Gates, Same Server
+
+<p align="center"><img src="docs/screenshots/09-jenkins-pipeline.png" width="900"/></p>
+<p align="center"><b>Jenkins Pipeline — Trivy → OWASP → SonarQube → Quality Gate → Build → Deploy</b></p>
+
+### SonarQube Quality Gate — Real Analysis
+
+<p align="center"><img src="docs/screenshots/08-sonarqube-quality-gate.png" width="900"/></p>
+<p align="center"><b>Self-hosted SonarQube — 4.1k LOC analyzed, Quality Gate Passed</b></p>
+
 ## Project Workflow
 
 <p align="center"><img src="docs/screenshots/01-landing-page.png" width="850"/></p>
 <p align="center"><b>Landing Page</b></p>
-
-<!-- <p align="center"><img src="docs/screenshots/02-curriculum-features.png" width="850"/></p>
-<p align="center"><b>Curriculum Breakdown</b></p> -->
 
 <p align="center"><img src="docs/screenshots/03-student-login.png" width="850"/></p>
 <p align="center"><b>Student Login</b></p>
@@ -72,6 +121,8 @@ flowchart LR
 - Bcrypt-hashed admin auth in MongoDB (not plaintext)
 - Email-based admin password reset (time-limited code)
 - Nginx security headers + SPA routing
+- Dual CI/CD engines, both gated by Trivy + OWASP + SonarQube
+- Self-hosted SonarQube — no third-party code exposure
 
 ## Project Structure
 
@@ -79,6 +130,10 @@ flowchart LR
 .
 ├── setup.sh
 ├── docker-compose.yml
+├── Jenkinsfile
+├── .github/workflows/
+│   ├── security.yml
+│   └── deploy.yml
 ├── backend/
 │   ├── Dockerfile
 │   ├── models/Admin.js
@@ -90,9 +145,9 @@ flowchart LR
 
 ## Roadmap
 
-- CI/CD (GitHub Actions + Jenkins)
 - Kubernetes manifests
 - Prometheus / Grafana / Loki monitoring
+- ArgoCD GitOps
 
 ## License
 
