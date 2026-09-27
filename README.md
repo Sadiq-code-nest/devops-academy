@@ -117,6 +117,17 @@ flowchart LR
 - Dual CI/CD engines, both gated by Trivy + OWASP + SonarQube
 - Self-hosted SonarQube — no third-party code exposure
 
+## Nginx Best Practices
+
+- Gzip compression (text/css/js/json/svg) — reduced payload size
+- Security headers: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`
+- `server_tokens off` — nginx version hidden from response headers
+- Hidden-file blocking (`location ~ /\.`) — `.env`, `.git`, etc. return `403`
+- Exact-match healthcheck (`location = /healthz`) — no unintended prefix matches
+- Immutable caching (30d) on static assets, separate from HTML
+- Non-root container user with correct pid-file ownership
+- SPA fallback (`try_files`) for client-side routing
+
 ## Project Structure
 
 ```
