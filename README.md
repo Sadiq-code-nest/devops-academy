@@ -1,36 +1,40 @@
-# DevOps Academy — Dockerized MERN Application
+# DevOps Academy: Dockerized MERN Application
 
-Student enrollment platform, fully containerized, DevSecOps-hardened, deployed on a self-managed Kubernetes platform with GitOps-driven continuous delivery.
+Student enrollment platform, containerized, DevSecOps hardened, deployed on a self-managed Kubernetes platform with GitOps continuous delivery.
+
+> **Note:** `app.sadiqdev.online` is a test domain used for demonstration purposes only.
 
 ## Table of Contents
 
-- [Stack](#stack)
-- [Quick Start](#quick-start)
-- [Architecture](#architecture)
-- [DevSecOps Pipeline (GitHub Actions + Jenkins)](#devsecops-pipeline)
-- [Nginx Hardening](#nginx-hardening)
-- [Kubernetes Platform](#kubernetes-platform)
-  - [Cluster & Networking](#cluster--networking)
-  - [TLS — cert-manager + Let's Encrypt](#tls--cert-manager--lets-encrypt)
-  - [Helm Packaging](#helm-packaging)
-  - [Security — RBAC & NetworkPolicy](#security--rbac--networkpolicy)
-  - [GitOps — ArgoCD](#gitops--argocd)
-- [Observability (In Progress)](#observability-in-progress)
-- [Project Structure](#project-structure)
-- [Roadmap](#roadmap)
-- [License](#license)
+| |
+|---|
+| [Stack](#stack) |
+| [Quick Start](#quick-start) |
+| [Architecture](#architecture) |
+| [DevSecOps Pipeline (GitHub Actions + Jenkins)](#devsecops-pipeline) |
+| [Nginx Hardening](#nginx-hardening) |
+| [Kubernetes Platform](#kubernetes-platform) |
+| &nbsp;&nbsp;&nbsp;↳ [Cluster & Networking](#cluster--networking) |
+| &nbsp;&nbsp;&nbsp;↳ [TLS (cert-manager + Let's Encrypt)](#tls) |
+| &nbsp;&nbsp;&nbsp;↳ [Helm Packaging](#helm-packaging) |
+| &nbsp;&nbsp;&nbsp;↳ [Security (RBAC & NetworkPolicy)](#security) |
+| &nbsp;&nbsp;&nbsp;↳ [GitOps (ArgoCD)](#gitops) |
+| [Observability (In Progress)](#observability-in-progress) |
+| [Project Structure](#project-structure) |
+| [Roadmap](#roadmap) |
+| [License](#license) |
 
 ## Stack
 
-- **Frontend:** React (Vite)
-- **Backend:** Node.js (Express)
-- **Database:** MongoDB
-- **Reverse Proxy:** Nginx
-- **Containers:** Docker (multi-stage builds) · Docker Compose
-- **CI/CD:** GitHub Actions · Jenkins · ArgoCD (GitOps)
-- **Security:** Trivy · OWASP Dependency-Check · SonarQube
-- **Orchestration:** Kubernetes (RKE2) · Helm · Calico · cert-manager
-- **Registry:** GitHub Container Registry (GHCR)
+- Frontend: React (Vite)
+- Backend: Node.js (Express)
+- Database: MongoDB
+- Reverse Proxy: Nginx
+- Containers: Docker (multi-stage) · Docker Compose
+- CI/CD: GitHub Actions · Jenkins · ArgoCD
+- Security: Trivy · OWASP Dependency-Check · SonarQube
+- Orchestration: Kubernetes (RKE2) · Helm · Calico · cert-manager
+- Registry: GitHub Container Registry (GHCR)
 
 ## Quick Start
 
@@ -58,15 +62,15 @@ flowchart LR
     end
 ```
 
-- 3 containers: **frontend**, **backend**, **mongodb**
+- 3 containers: frontend, backend, mongodb
 - Nginx serves the React build and fronts the stack
-- MongoDB has no host-exposed port — reachable only from the backend
+- MongoDB has no host-exposed port
 
 ## DevSecOps Pipeline
 
 ```mermaid
 flowchart LR
-    subgraph CI["CI — dual engine"]
+    subgraph CI["CI dual engine"]
         GHA[GitHub Actions]
         JEN[Jenkins]
     end
@@ -81,107 +85,107 @@ flowchart LR
     T1 & O1 & S1 --> QG1{Quality Gate}
     T2 & O2 & S2 --> QG2{Quality Gate}
 
-    QG1 -->|pass| DEPLOY[Build Images → Deploy]
+    QG1 -->|pass| DEPLOY[Build Images / Deploy]
     QG2 -->|pass| DEPLOY
 ```
 
 | Gate | Tool | Enforcement |
 |---|---|---|
-| Vulnerability scan (filesystem/deps) | **Trivy** | Blocks on CRITICAL/HIGH |
-| Dependency CVE audit | **OWASP Dependency-Check** | NVD-backed, CVSS ≥ 7 |
-| Static code analysis | **SonarQube** | Quality Gate must pass |
-| Deploy | Docker Compose / ArgoCD | Only runs after all gates pass |
+| Vulnerability scan | Trivy | Blocks on CRITICAL/HIGH |
+| Dependency CVE audit | OWASP Dependency-Check | NVD-backed, CVSS ≥ 7 |
+| Static analysis | SonarQube | Quality Gate required |
+| Deploy | Docker Compose / ArgoCD | Gated on scan pass |
 
-- Dual CI/CD engines (GitHub Actions + Jenkins), independently gated by the same three tools
-- Self-hosted SonarQube — no third-party code exposure
-- GHCR used as the container registry for the Kubernetes deployment path
+- Dual CI/CD engines, same three gates on each
+- Self-hosted SonarQube, no third-party code exposure
+- GHCR used as the registry for the Kubernetes deployment path
 
 <p align="center"><img src="docs/screenshots/10-github-actions-pipeline.png" width="900"/></p>
-<p align="center"><b>GitHub Actions — Trivy → OWASP → SonarQube → Deploy</b></p>
+<p align="center"><b>GitHub Actions: Trivy, OWASP, SonarQube, Deploy</b></p>
 
 <p align="center"><img src="docs/screenshots/09-jenkins-pipeline.png" width="900"/></p>
-<p align="center"><b>Jenkins — Same Gates, Same Server</b></p>
+<p align="center"><b>Jenkins: same gates, same server</b></p>
 
 <p align="center"><img src="docs/screenshots/08-sonarqube-quality-gate.png" width="900"/></p>
-<p align="center"><b>Self-hosted SonarQube — Quality Gate Passed</b></p>
+<p align="center"><b>Self-hosted SonarQube, Quality Gate passed</b></p>
 
 ## Nginx Hardening
 
-- Gzip compression (text/css/js/json/svg)
+- Gzip compression
 - Security headers: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`
-- `server_tokens off` — version hidden from response headers
-- Hidden-file blocking (`location ~ /\.`) — `.env`, `.git`, etc. return `403`
-- Exact-match healthcheck (`location = /healthz`)
-- Immutable caching (30d) on static assets
-- Non-root container user with correct pid-file ownership
-- SPA fallback (`try_files`) for client-side routing
+- `server_tokens off`
+- Hidden-file blocking (`.env`, `.git` return `403`)
+- Exact-match healthcheck
+- Immutable caching on static assets
+- Non-root container, correct pid-file ownership
+- SPA fallback routing
 
 ## Kubernetes Platform
 
-Deployed on a dedicated, self-managed RKE2 cluster (separate from the CI/CD host), reachable at a real domain with a trusted TLS certificate, deployed via GitOps.
+Self-managed RKE2 cluster on a dedicated host, real domain, trusted TLS, GitOps deployment.
 
 ### Cluster & Networking
 
-- **RKE2** (Rancher Kubernetes Engine 2) — CIS-hardened distribution, single-node control plane
-- **Calico** CNI (bundled as Canal) — the default distro was chosen specifically because it enforces `NetworkPolicy`, unlike lighter alternatives
-- **Traefik** — bundled Ingress controller, path-based routing (`/api` → backend, `/` → frontend) behind a single entry point
-- Dedicated Elastic IP + custom domain (`app.sadiqdev.online`) via Spaceship DNS
-- `local-path-provisioner` — dynamic PersistentVolume provisioning for stateful workloads
+- RKE2, CIS-hardened distribution, single-node control plane
+- Calico CNI (Canal), chosen for real NetworkPolicy enforcement
+- Traefik Ingress, path-based routing (`/api`, `/`) behind one entry point
+- Dedicated Elastic IP, custom domain via Spaceship DNS
+- `local-path-provisioner` for dynamic PersistentVolumes
 
 <p align="center"><img src="docs/screenshots/11-k8s-cluster-nodes-pods.png" width="800"/></p>
-<p align="center"><b>Cluster node and application workloads — Ready / Running</b></p>
+<p align="center"><b>Cluster node and workloads, Ready/Running</b></p>
 
-### TLS — cert-manager + Let's Encrypt
+### TLS
 
-- `cert-manager` installed with a `ClusterIssuer` targeting Let's Encrypt's production ACME endpoint
-- HTTP-01 challenge automated through the existing Ingress — no manual certificate handling
-- Auto-renewing, trusted certificate — no self-signed warnings
+- `cert-manager` with a `ClusterIssuer` on Let's Encrypt production
+- HTTP-01 challenge automated through the existing Ingress
+- Auto-renewing, trusted certificate
 
 <p align="center"><img src="docs/screenshots/12-tls-certificate.png" width="800"/></p>
-<p align="center"><b>Trusted Let's Encrypt certificate — app.sadiqdev.online</b></p>
+<p align="center"><b>Trusted Let's Encrypt certificate</b></p>
 
 ### Helm Packaging
 
-- Full application (Namespace, ConfigMap, Secret, MongoDB StatefulSet, backend/frontend Deployments, Ingress, HPA, RBAC, NetworkPolicy) converted into a single versioned Helm chart
-- Parameterized `values.yaml` — image tags, replica counts, resource limits, domain, all configurable without touching templates
-- Secrets excluded from version control by design — real values supplied only at install/sync time
+- Full application packaged as one versioned Helm chart
+- Parameterized `values.yaml`: image tags, replicas, resource limits, domain
+- Secrets excluded from version control by design
 
 <p align="center"><img src="docs/screenshots/13-helm-deployed.png" width="800"/></p>
-<p align="center"><b>Helm release — deployed and tracked</b></p>
+<p align="center"><b>Helm release, deployed</b></p>
 
-### Security — RBAC & NetworkPolicy
+### Security
 
-- Dedicated `ServiceAccount` per workload, bound to a least-privilege `Role` (read-only on ConfigMaps/Secrets) — replacing the implicit `default` service account
-- Default-deny `NetworkPolicy` applied cluster-namespace-wide, with explicit allow rules layered on top:
-  - Ingress controller → frontend/backend only
-  - Backend → MongoDB only, on port 27017
-  - **MongoDB is unreachable from the frontend pod entirely** — verified directly, not assumed
-- Non-root containers throughout, explicit numeric UID, dropped Linux capabilities, no privilege escalation
+- Dedicated ServiceAccount per workload, bound to a least-privilege Role
+- Default-deny NetworkPolicy, explicit allow rules on top:
+  - Ingress to frontend/backend only
+  - Backend to MongoDB only, port 27017
+  - MongoDB unreachable from frontend, verified directly
+- Non-root containers, explicit numeric UID, dropped capabilities
 
 <p align="center"><img src="docs/screenshots/14-networkpolicy-enforced.png" width="800"/></p>
-<p align="center"><b>NetworkPolicies applied — default-deny plus explicit allow rules</b></p>
+<p align="center"><b>NetworkPolicies applied</b></p>
 
-### GitOps — ArgoCD
+### GitOps
 
-- Application deployment fully decoupled from manual `kubectl`/`helm` commands
-- ArgoCD continuously reconciles the live cluster state against the Helm chart in this repository
-- Auto-sync, self-heal, and automatic pruning enabled — a manual change to the cluster is automatically reverted to match git; the desired state always lives in version control
-- Deploying a change is now: commit → push → ArgoCD applies it automatically
+- Deployment fully decoupled from manual `kubectl`/`helm` commands
+- ArgoCD reconciles live cluster state against the Helm chart in this repo
+- Auto-sync, self-heal, and pruning enabled
+- Deploy flow: commit, push, ArgoCD applies automatically
 
 <p align="center"><img src="docs/screenshots/16-argocd-app-synced.png" width="800"/></p>
-<p align="center"><b>ArgoCD — application synced from this repository</b></p>
+<p align="center"><b>ArgoCD, application synced from this repository</b></p>
 
 <p align="center"><img src="docs/screenshots/15-argocd-resource-tree.png" width="900"/></p>
-<p align="center"><b>Full resource tree — every object tracked and health-checked by ArgoCD</b></p>
+<p align="center"><b>Full resource tree, tracked and health-checked</b></p>
 
 ## Observability (In Progress)
 
-Architecture designed and partially provisioned; full rollout in progress.
+Architecture designed, partially provisioned.
 
-- **Prometheus** + **Grafana** + **Loki**, run on a dedicated, separate monitoring host — deliberately kept off the application cluster to avoid resource contention on a constrained node
-- **node_exporter** running natively on the Kubernetes host for node-level metrics
-- **Promtail** planned as an in-cluster DaemonSet to ship pod logs to Loki
-- Grafana data sources (Prometheus + Loki) provisioned as code, not configured manually through the UI
+- Prometheus, Grafana, Loki on a dedicated, separate monitoring host
+- node_exporter running natively on the Kubernetes host
+- Promtail planned as an in-cluster DaemonSet for log shipping
+- Grafana data sources provisioned as code
 
 ## Project Structure
 
@@ -202,16 +206,16 @@ Architecture designed and partially provisioned; full rollout in progress.
 ├── frontend/
 │   ├── Dockerfile
 │   └── nginx.conf
-├── k8s/                     # raw manifests (early phase / reference)
-├── helm/devops-academy/     # Helm chart — source of truth for the cluster
-└── monitoring-server/       # Prometheus / Grafana / Loki (separate host)
+├── k8s/
+├── helm/devops-academy/
+└── monitoring-server/
 ```
 
 ## Roadmap
 
-- Complete Promtail log shipping + Grafana dashboards
-- Multi-environment namespaces (dev/staging/prod) via Helm values
-- Horizontal Pod Autoscaler load-test demonstration
+- Complete Promtail log shipping and Grafana dashboards
+- Multi-environment namespaces via Helm values
+- HPA load-test demonstration
 - Pod/node failure and recovery testing
 
 ## License
