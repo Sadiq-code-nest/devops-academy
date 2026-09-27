@@ -6,7 +6,7 @@ RUN npm install --omit=dev
 FROM node:20-alpine AS runtime
 ENV NODE_ENV=production
 WORKDIR /app
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN addgroup -g 1001 -S appgroup && adduser -u 1001 -S appuser -G appgroup
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 USER appuser
