@@ -1,0 +1,44 @@
+# Deliberately lean for a small single-node cluster.
+# Requests are sized to this project's actual observed load (~13% CPU
+# node-wide), not upstream defaults meant for real production traffic.
+# Alertmanager is disabled - a genuine production cluster would keep it;
+# this node doesn't have the headroom for a fourth always-on component.
+
+alertmanager:
+  enabled: false
+
+prometheusOperator:
+  resources:
+    requests: { cpu: 30m, memory: 128Mi }
+    limits: { cpu: 150m, memory: 256Mi }
+
+prometheus:
+  prometheusSpec:
+    resources:
+      requests: { cpu: 50m, memory: 256Mi }
+      limits: { cpu: 200m, memory: 512Mi }
+    retention: 3d
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 3Gi
+
+grafana:
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits: { cpu: 200m, memory: 256Mi }
+  persistence:
+    enabled: true
+    storageClassName: local-path
+    size: 1Gi
+  adminPassword: "CHANGE-ME"
+
+nodeExporter:
+  enabled: true
+
+kubeStateMetrics:
+  enabled: true
