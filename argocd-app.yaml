@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: devops-academy
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Sadiq-code-nest/devops-academy.git
+    targetRevision: main
+    path: helm/devops-academy
+    helm:
+      parameters:
+        - name: secrets.mongoRootPassword
+          value: "CHANGE-ME"
+        - name: secrets.jwtSecret
+          value: "CHANGE-ME"
+        - name: secrets.adminPassword
+          value: "CHANGE-ME"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: devops-academy
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
