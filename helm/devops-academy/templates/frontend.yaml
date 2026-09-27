@@ -12,6 +12,7 @@ spec:
     metadata:
       labels: { app: frontend }
     spec:
+      serviceAccountName: academy-sa
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001
