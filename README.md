@@ -6,7 +6,8 @@ Student enrollment platform, containerized, DevSecOps hardened, deployed on a se
 
 
 ## Table of Contents
-
+ 
+<div align="center">
 | |
 |---|
 | [Stack](#stack) |
@@ -24,6 +25,8 @@ Student enrollment platform, containerized, DevSecOps hardened, deployed on a se
 | [Project Structure](#project-structure) |
 | [Roadmap](#roadmap) |
 | [License](#license) |
+ 
+</div>
 
 ## Stack
 
