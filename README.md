@@ -4,28 +4,27 @@ Student enrollment platform, containerized, DevSecOps hardened, deployed on a se
 
 > **Note:** `app.sadiqdev.online` is a test domain used for demonstration purposes only.
 
+
 ## Table of Contents
- 
-<p align="center">
-<a href="#stack">Stack</a> •
-<a href="#quick-start">Quick Start</a> •
-<a href="#architecture">Architecture</a> •
-<a href="#devsecops-pipeline">DevSecOps Pipeline</a> •
-<a href="#nginx-hardening">Nginx Hardening</a> •
-<a href="#kubernetes-platform">Kubernetes Platform</a> •
-<a href="#observability-in-progress">Observability</a> •
-<a href="#project-structure">Project Structure</a> •
-<a href="#roadmap">Roadmap</a> •
-<a href="#license">License</a>
-</p>
-<p align="center">
-<sub>Kubernetes Platform:</sub>
-<a href="#cluster--networking">Cluster & Networking</a> •
-<a href="#tls">TLS</a> •
-<a href="#helm-packaging">Helm Packaging</a> •
-<a href="#security">Security</a> •
-<a href="#gitops">GitOps</a>
-</p>
+
+| |
+|---|
+| [Stack](#stack) |
+| [Quick Start](#quick-start) |
+| [Architecture](#architecture) |
+| [DevSecOps Pipeline (GitHub Actions + Jenkins)](#devsecops-pipeline) |
+| [Nginx Hardening](#nginx-hardening) |
+| [Kubernetes Platform](#kubernetes-platform) |
+| &nbsp;&nbsp;&nbsp;↳ [Cluster & Networking](#cluster--networking) |
+| &nbsp;&nbsp;&nbsp;↳ [TLS (cert-manager + Let's Encrypt)](#tls) |
+| &nbsp;&nbsp;&nbsp;↳ [Helm Packaging](#helm-packaging) |
+| &nbsp;&nbsp;&nbsp;↳ [Security (RBAC & NetworkPolicy)](#security) |
+| &nbsp;&nbsp;&nbsp;↳ [GitOps (ArgoCD)](#gitops) |
+| [Observability (In Progress)](#observability-in-progress) |
+| [Project Structure](#project-structure) |
+| [Roadmap](#roadmap) |
+| [License](#license) |
+
 ## Stack
 
 - Frontend: React (Vite)
