@@ -28,7 +28,6 @@ jobs:
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
           envs: MONGO_ROOT_USER,MONGO_ROOT_PASSWORD,JWT_SECRET,ADMIN_USERNAME,ADMIN_PASSWORD,SMTP_HOST,SMTP_PORT,SMTP_USER,SMTP_PASS,PUBLIC_URL
@@ -91,7 +90,6 @@ jobs:
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
