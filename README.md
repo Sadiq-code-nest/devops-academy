@@ -6,28 +6,26 @@ Student enrollment platform, containerized, DevSecOps hardened, deployed on a se
 
 ## Table of Contents
  
-<table align="center">
-<tr><td>
-[Stack](#stack)<br>
-[Quick Start](#quick-start)<br>
-[Architecture](#architecture)<br>
-[DevSecOps Pipeline (GitHub Actions + Jenkins)](#devsecops-pipeline)<br>
-[Nginx Hardening](#nginx-hardening)<br>
-[Kubernetes Platform](#kubernetes-platform)<br>
-&nbsp;&nbsp;&nbsp;↳ [Cluster & Networking](#cluster--networking)<br>
-&nbsp;&nbsp;&nbsp;↳ [TLS (cert-manager + Let's Encrypt)](#tls)<br>
-&nbsp;&nbsp;&nbsp;↳ [Helm Packaging](#helm-packaging)<br>
-&nbsp;&nbsp;&nbsp;↳ [Security (RBAC & NetworkPolicy)](#security)<br>
-&nbsp;&nbsp;&nbsp;↳ [GitOps (ArgoCD)](#gitops)<br>
-[Observability (In Progress)](#observability-in-progress)<br>
-[Project Structure](#project-structure)<br>
-[Roadmap](#roadmap)<br>
-[License](#license)
- 
-</td></tr>
-</table>
-
-
+<p align="center">
+<a href="#stack">Stack</a> •
+<a href="#quick-start">Quick Start</a> •
+<a href="#architecture">Architecture</a> •
+<a href="#devsecops-pipeline">DevSecOps Pipeline</a> •
+<a href="#nginx-hardening">Nginx Hardening</a> •
+<a href="#kubernetes-platform">Kubernetes Platform</a> •
+<a href="#observability-in-progress">Observability</a> •
+<a href="#project-structure">Project Structure</a> •
+<a href="#roadmap">Roadmap</a> •
+<a href="#license">License</a>
+</p>
+<p align="center">
+<sub>Kubernetes Platform:</sub>
+<a href="#cluster--networking">Cluster & Networking</a> •
+<a href="#tls">TLS</a> •
+<a href="#helm-packaging">Helm Packaging</a> •
+<a href="#security">Security</a> •
+<a href="#gitops">GitOps</a>
+</p>
 ## Stack
 
 - Frontend: React (Vite)
