@@ -20,3 +20,4 @@ node_modules/
 # ── OS files ────────────────────────────────
 .DS_Store
 Thumbs.db
+k8s/02-secret-filled.yaml
