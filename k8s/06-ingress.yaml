@@ -3,8 +3,14 @@ kind: Ingress
 metadata:
   name: academy-ingress
   namespace: devops-academy
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: traefik
+  tls:
+    - hosts:
+        - app.sadiqdev.online
+      secretName: academy-tls
   rules:
     - host: app.sadiqdev.online
       http:
