@@ -1,0 +1,40 @@
+namespace: devops-academy
+domain: app.sadiqdev.online
+
+backend:
+  image: ghcr.io/sadiq-code-nest/devops-academy-backend
+  tag: latest
+  replicas: 1
+  port: 5000
+  resources:
+    requests: { cpu: 100m, memory: 128Mi }
+    limits: { cpu: 500m, memory: 256Mi }
+
+frontend:
+  image: ghcr.io/sadiq-code-nest/devops-academy-frontend
+  tag: latest
+  replicas: 1
+  port: 8080
+  resources:
+    requests: { cpu: 50m, memory: 64Mi }
+    limits: { cpu: 200m, memory: 128Mi }
+
+mongo:
+  storageSize: 5Gi
+  storageClassName: local-path
+
+hpa:
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilization: 70
+
+secrets:
+  mongoRootUser: "root"
+  mongoRootPassword: "CHANGE-ME"
+  jwtSecret: "CHANGE-ME"
+  adminUsername: "admin"
+  adminPassword: "CHANGE-ME"
+  smtpHost: ""
+  smtpPort: ""
+  smtpUser: ""
+  smtpPass: ""
