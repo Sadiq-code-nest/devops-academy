@@ -3,6 +3,8 @@ name: Build and Push to GHCR
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "monitoring/**"
 
 env:
   REGISTRY: ghcr.io
