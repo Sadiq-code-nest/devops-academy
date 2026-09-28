@@ -1,0 +1,107 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["Security Scan"]
+    types: [completed]
+
+jobs:
+#v2 for run
+  build-images:
+    name: "Stage 1 — Build Docker Images"
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    env:
+      MONGO_ROOT_USER: ${{ secrets.MONGO_ROOT_USER }}
+      MONGO_ROOT_PASSWORD: ${{ secrets.MONGO_ROOT_PASSWORD }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
+      PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
+    steps:
+      - name: Pull latest code and build images
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT }}
+          envs: MONGO_ROOT_USER,MONGO_ROOT_PASSWORD,JWT_SECRET,ADMIN_USERNAME,ADMIN_PASSWORD,SMTP_HOST,SMTP_PORT,SMTP_USER,SMTP_PASS,PUBLIC_URL
+          script: |
+            set -e
+
+            REPO_DIR=/home/sadiq/devops-academy
+
+            if [ -d "$REPO_DIR/.git" ]; then
+              echo "== Repo exists, pulling latest =="
+              cd "$REPO_DIR"
+              git pull origin main
+            else
+              echo "== First run, cloning repo =="
+              git clone https://github.com/Sadiq-code-nest/devops-academy.git "$REPO_DIR"
+              cd "$REPO_DIR"
+            fi
+
+            echo "== Writing backend/.env from secrets =="
+            cat > backend/.env << ENVEOF
+            PORT=5000
+            NODE_ENV=production
+            CLIENT_URL=${PUBLIC_URL}:8080
+
+            MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+            MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+            MONGO_URI=mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongo:27017/devops_academy?authSource=admin
+
+            JWT_SECRET=${JWT_SECRET}
+
+            ADMIN_USERNAME=${ADMIN_USERNAME}
+            ADMIN_PASSWORD=${ADMIN_PASSWORD}
+
+            SMTP_HOST=${SMTP_HOST}
+            SMTP_PORT=${SMTP_PORT}
+            SMTP_USER=${SMTP_USER}
+            SMTP_PASS=${SMTP_PASS}
+            SMTP_FROM=${SMTP_USER}
+            ENVEOF
+
+            echo "== Writing frontend/.env from secrets =="
+            cat > frontend/.env << ENVEOF
+            VITE_API_URL=${PUBLIC_URL}:5000/api
+            ENVEOF
+
+            echo "== Patching build-arg in docker-compose.yml =="
+            sed -i -E "s#VITE_API_URL: \"[^\"]+\"#VITE_API_URL: \"${PUBLIC_URL}:5000/api\"#" docker-compose.yml
+
+            echo "== Building images (no restart yet) =="
+            export COMPOSE_BAKE=false
+            docker compose build --no-cache
+
+  deploy:
+    name: "Stage 2 — Deploy"
+    needs: build-images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restart containers with new images
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            set -e
+            cd /home/sadiq/devops-academy
+
+            echo "== Restarting containers =="
+            export COMPOSE_BAKE=false
+            docker compose up -d
+
+            echo "== Cleaning up old images =="
+            docker image prune -f
+
+            echo "== Final status =="
+            docker compose ps
