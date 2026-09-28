@@ -3,6 +3,7 @@ services:
     image: gcr.io/cadvisor/cadvisor:v0.49.1
     container_name: cadvisor
     restart: unless-stopped
+    cgroupns_mode: "host"
     ports:
       - "8082:8080"
     volumes:
