@@ -27,8 +27,10 @@ jobs:
           script: |
             set -e
             REPO_DIR=$HOME/devops-academy
-            if [ -d "$REPO_DIR/.git" ]; then
-              cd "$REPO_DIR" && git pull origin main
+              if [ -d "$REPO_DIR/.git" ]; then
+              cd "$REPO_DIR"
+              rm -f monitoring/prometheus/prometheus.yml
+              git pull origin main
             else
               git clone https://github.com/Sadiq-code-nest/devops-academy.git "$REPO_DIR"
               cd "$REPO_DIR"
