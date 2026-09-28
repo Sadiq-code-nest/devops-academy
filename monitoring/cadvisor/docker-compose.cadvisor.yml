@@ -4,7 +4,7 @@ services:
     container_name: cadvisor
     restart: unless-stopped
     ports:
-      - "8081:8080"
+      - "8082:8080"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
