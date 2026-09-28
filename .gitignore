@@ -23,3 +23,6 @@ Thumbs.db
 k8s/02-secret-filled.yaml
 monitoring/.env
 monitoring/prometheus/targets/*.json
+
+monitoring/.env
+monitoring/prometheus/prometheus.yml
