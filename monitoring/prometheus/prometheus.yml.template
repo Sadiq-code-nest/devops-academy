@@ -15,3 +15,7 @@ scrape_configs:
       - targets: ['__APP_SERVER_IP__:8082']
 
 # trigger-scope-test
+  - job_name: 'backend'
+    static_configs:
+      - targets: ['__APP_SERVER_IP__:5000']
+    metrics_path: '/metrics'
