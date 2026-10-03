@@ -38,7 +38,7 @@ jobs:
             cd monitoring
             sed "s/__APP_SERVER_IP__/${APP_SERVER_IP}/" prometheus/prometheus.yml.template > prometheus/prometheus.yml
             echo "GRAFANA_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}" > .env
-            docker compose -f docker-compose.monitoring.yml up -d --force-recreate prometheus
+            docker compose -f docker-compose.monitoring.yml up -d --force-recreate prometheus grafana
             docker compose -f docker-compose.monitoring.yml ps
 
   deploy-node-exporter:
