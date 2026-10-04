@@ -1,6 +1,6 @@
 # DevOps Academy: Dockerized MERN Application
 
-Student enrollment platform, containerized, DevSecOps hardened, deployed on a self-managed Kubernetes platform with GitOps continuous delivery.
+Student enrollment platform, containerized, DevSecOps hardened, deployed on a self-managed Kubernetes platform with GitOps continuous delivery and full-stack observability.
 
 > **Note:** `app.sadiqdev.online` is a test domain used for demonstration purposes only.
 
@@ -21,7 +21,7 @@ Student enrollment platform, containerized, DevSecOps hardened, deployed on a se
 | &nbsp;&nbsp;&nbsp;↳ [Helm Packaging](#helm-packaging) |
 | &nbsp;&nbsp;&nbsp;↳ [Security (RBAC & NetworkPolicy)](#security) |
 | &nbsp;&nbsp;&nbsp;↳ [GitOps (ArgoCD)](#gitops) |
-| [Observability (In Progress)](#observability-in-progress) |
+| [Observability](#observability) |
 | [Project Structure](#project-structure) |
 | [Roadmap](#roadmap) |
 | [License](#license) |
@@ -38,6 +38,7 @@ Student enrollment platform, containerized, DevSecOps hardened, deployed on a se
 - CI/CD: GitHub Actions · Jenkins · ArgoCD
 - Security: Trivy · OWASP Dependency-Check · SonarQube
 - Orchestration: Kubernetes (RKE2) · Helm · Calico · cert-manager
+- Observability: Prometheus · Grafana · Loki · Grafana Alloy · Node Exporter · cAdvisor
 - Registry: GitHub Container Registry (GHCR)
 
 ## Quick Start
@@ -182,14 +183,34 @@ Self-managed RKE2 cluster on a dedicated host, real domain, trusted TLS, GitOps 
 <p align="center"><img src="docs/screenshots/15-argocd-resource-tree.png" width="900"/></p>
 <p align="center"><b>Full resource tree, tracked and health-checked</b></p>
 
-## Observability (In Progress)
+## Observability
 
-Architecture designed, partially provisioned.
+Metrics and logs for the app server, collected by lightweight agents and stored on a **separate monitoring server**. Full details: **[observability/README.md](observability/README.md)**
 
-- Prometheus, Grafana, Loki on a dedicated, separate monitoring host
-- node_exporter running natively on the Kubernetes host
-- Promtail planned as an in-cluster DaemonSet for log shipping
-- Grafana data sources provisioned as code
+- Prometheus scrapes host (Node Exporter), container (cAdvisor) and application (`prom-client` `/metrics`) metrics
+- Grafana dashboards: Infrastructure, Docker Containers, Application, Node Exporter Full, Logs
+- Loki + Grafana Alloy ship all container logs to one place, 15-day retention
+- Data sources and dashboards provisioned as code, deployed by GitHub Actions
+- No hardcoded IPs or secrets; the app server address is injected from GitHub Secrets
+- Real problems fixed and documented: cAdvisor on containerd + cgroup v2, stale bind mounts, Compose volume naming
+
+<p align="center"><img src="docs/screenshots/17-prometheus-targets.png" width="800"/></p>
+<p align="center"><b>Prometheus: backend, cAdvisor, Node Exporter and Prometheus all UP</b></p>
+
+<p align="center"><img src="docs/screenshots/19-grafana-node-exporter-full.png" width="800"/></p>
+<p align="center"><b>Grafana: host metrics (Node Exporter Full, provisioned from git)</b></p>
+
+<p align="center"><img src="docs/screenshots/21-grafana-application.png" width="700"/></p>
+<p align="center"><b>Grafana: application metrics (requests, latency, per-route rate)</b></p>
+
+<p align="center"><img src="docs/screenshots/18-cadvisor-containers.png" width="700"/></p>
+<p align="center"><b>cAdvisor: every container detected</b></p>
+
+<p align="center"><img src="docs/screenshots/25-grafana-logs-dashboard.png" width="800"/></p>
+<p align="center"><b>Grafana: centralized logs dashboard (Loki)</b></p>
+
+<p align="center"><img src="docs/screenshots/24-loki-explore-backend-logs.png" width="800"/></p>
+<p align="center"><b>Loki: backend logs queried in Grafana Explore</b></p>
 
 ## Project Structure
 
@@ -202,9 +223,11 @@ Architecture designed, partially provisioned.
 ├── .github/workflows/
 │   ├── security.yml
 │   ├── deploy.yml
-│   └── ghcr-build.yml
+│   ├── ghcr-build.yml
+│   └── deploy-monitoring.yml
 ├── backend/
 │   ├── Dockerfile
+│   ├── metrics.js
 │   ├── models/Admin.js
 │   └── seedAdmin.js
 ├── frontend/
@@ -212,12 +235,13 @@ Architecture designed, partially provisioned.
 │   └── nginx.conf
 ├── k8s/
 ├── helm/devops-academy/
-└── monitoring-server/
+├── observability/
+└── docs/screenshots/
 ```
 
 ## Roadmap
 
-- Complete Promtail log shipping and Grafana dashboards
+- Structured JSON logging, alerting, uptime probes, SLOs and tracing ([observability roadmap](observability/ROADMAP.md))
 - Multi-environment namespaces via Helm values
 - HPA load-test demonstration
 - Pod/node failure and recovery testing
