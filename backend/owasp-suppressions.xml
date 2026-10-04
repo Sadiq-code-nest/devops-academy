@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+   <suppress>
+      <notes><![CDATA[
+      False positive: braces@3.0.3 is the officially patched version per GHSA-vfj7-8cjw-p6xm
+      (fix released in 3.0.3). OWASP Dependency-Check's NVD-based matching incorrectly
+      flags the already-patched version. Verified against GitHub Security Advisory directly.
+      Reviewed: 2026-10-04.
+      ]]></notes>
+      <packageUrl regex="true">^pkg:npm/braces@3\.0\.3$</packageUrl>
+      <vulnerabilityName>GHSA-vfj7-8cjw-p6xm</vulnerabilityName>
+   </suppress>
+</suppressions>
