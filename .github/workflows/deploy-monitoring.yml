@@ -10,7 +10,7 @@ on:
 
 jobs:
   deploy-monitoring-server:
-    name: "Deploy Prometheus + Grafana"
+    name: "Deploy Prometheus + Loki + Grafana"
     runs-on: ubuntu-latest
     env:
       APP_SERVER_IP: ${{ secrets.APP_SERVER_IP }}
@@ -41,9 +41,11 @@ jobs:
             docker compose -f docker-compose.monitoring.yml up -d --force-recreate prometheus loki grafana
             docker compose -f docker-compose.monitoring.yml ps
 
-  deploy-node-exporter:
-    name: "Deploy Node Exporter"
+  deploy-app-server-agents:
+    name: "Deploy Node Exporter + cAdvisor + Alloy"
     runs-on: ubuntu-latest
+    env:
+      MONITORING_SERVER_HOST: ${{ secrets.MONITORING_SERVER_HOST }}
     steps:
       - name: Deploy to app server
         uses: appleboy/ssh-action@v1.0.3
@@ -52,6 +54,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
+          envs: MONITORING_SERVER_HOST
           script: |
             set -e
             REPO_DIR=$HOME/devops-academy
@@ -62,3 +65,7 @@ jobs:
             cd "$REPO_DIR/observability/cadvisor"
             docker compose -f docker-compose.cadvisor.yml up -d
             docker compose -f docker-compose.cadvisor.yml ps
+            cd "$REPO_DIR/observability/alloy"
+            echo "LOKI_URL=http://${MONITORING_SERVER_HOST}:3100/loki/api/v1/push" > .env
+            docker compose -f docker-compose.alloy.yml up -d --force-recreate
+            docker compose -f docker-compose.alloy.yml ps

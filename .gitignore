@@ -26,3 +26,6 @@ monitoring/prometheus/targets/*.json
 
 monitoring/.env
 observability/prometheus/prometheus.yml
+
+observability/.env
+observability/alloy/.env

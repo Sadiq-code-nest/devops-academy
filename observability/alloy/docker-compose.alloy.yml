@@ -1,0 +1,26 @@
+name: devops-academy-alloy
+
+services:
+  alloy:
+    image: grafana/alloy:v1.5.1
+    container_name: alloy
+    restart: unless-stopped
+    # Reading the Docker socket needs root inside the container.
+    # This is a Phase 12 hardening item.
+    user: "0:0"
+    environment:
+      - LOKI_URL=${LOKI_URL}
+    command:
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+      - /etc/alloy/config.alloy
+    volumes:
+      - ./config:/etc/alloy:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - alloy-data:/var/lib/alloy/data
+    ports:
+      - "127.0.0.1:12345:12345"
+
+volumes:
+  alloy-data:
