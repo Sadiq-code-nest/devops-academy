@@ -4,11 +4,11 @@ on:
   push:
     branches: [main]
     paths-ignore:
-      - "monitoring/**"
+      - "observability/**"
   pull_request:
     branches: [main]
     paths-ignore:
-      - "monitoring/**"
+      - "observability/**"
 
 jobs:
 

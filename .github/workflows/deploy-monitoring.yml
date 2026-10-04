@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "monitoring/**"
+      - "observability/**"
       - ".github/workflows/deploy-monitoring.yml"
   workflow_dispatch:
 
@@ -29,13 +29,13 @@ jobs:
             REPO_DIR=$HOME/devops-academy
               if [ -d "$REPO_DIR/.git" ]; then
               cd "$REPO_DIR"
-              rm -f monitoring/prometheus/prometheus.yml
+              rm -f observability/prometheus/prometheus.yml
               git pull origin main
             else
               git clone https://github.com/Sadiq-code-nest/devops-academy.git "$REPO_DIR"
               cd "$REPO_DIR"
             fi
-            cd monitoring
+            cd observability
             sed "s/__APP_SERVER_IP__/${APP_SERVER_IP}/" prometheus/prometheus.yml.template > prometheus/prometheus.yml
             echo "GRAFANA_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}" > .env
             docker compose -f docker-compose.monitoring.yml up -d --force-recreate prometheus grafana
@@ -56,9 +56,9 @@ jobs:
             set -e
             REPO_DIR=$HOME/devops-academy
             cd "$REPO_DIR" && git pull origin main
-            cd monitoring/node-exporter
+            cd observability/node-exporter
             docker compose -f docker-compose.node-exporter.yml up -d
             docker compose -f docker-compose.node-exporter.yml ps
-            cd "$REPO_DIR/monitoring/cadvisor"
+            cd "$REPO_DIR/observability/cadvisor"
             docker compose -f docker-compose.cadvisor.yml up -d
             docker compose -f docker-compose.cadvisor.yml ps
