@@ -5,6 +5,7 @@ Student enrollment platform, containerized, DevSecOps hardened, deployed on a se
 > **Note:** `app.sadiqdev.online` is a test domain used for demonstration purposes only.
 
 
+<div align="center">
 
 ## Table of Contents
 
@@ -26,7 +27,7 @@ Student enrollment platform, containerized, DevSecOps hardened, deployed on a se
 | [Roadmap](#roadmap) |
 | [License](#license) |
 
- 
+ </div>
 
 ## Stack
 
